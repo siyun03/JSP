@@ -1,0 +1,91 @@
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+#login form p {
+	width: 100%;
+	text-align: right;
+}
+
+#container{
+    width: 760px;
+    margin: 0 auto;
+}
+body{
+    background-color: rgb(255, 241, 223);
+    border: 2px solid black;
+    font-family: 'Times New Roman', Times, serif;
+}
+p#title{
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px rgb(73, 71, 71);
+}
+header{
+    text-align: right;
+    font-size: small;
+}
+
+article{
+    text-align: center;
+    background-color: rgb(255, 254, 241);
+    border: 3px solid rgb(255, 241, 216);
+    width: 450px;
+    height: 300px;
+    margin-left: 150px;
+    padding-top: 30px;   
+}
+footer{
+    text-align: end;
+    float: right;
+}
+div#banner{
+    float:right ;
+}
+div#ganpan{
+    width: 90%;
+    height: auto;
+    float: left;
+    display: subgrid;
+    margin-bottom: 20px;
+}
+
+.menu {
+    padding-bottom: 20px;
+    margin-left: 175px;
+    text-align: left;
+}
+.menu li:hover{
+    background-color: #ffefc4;
+}
+.menu li {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 5px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ffcdb0;
+    border-radius: 5px;
+    background-color: rgb(255, 252, 249);
+    border-style: dashed;
+}
+
+.menu1 {
+    text-align: center;
+    width: 100px;                  
+    list-style-type: none;
+    background-color: #ffecd1;
+    border: 1px solid #ffe292;
+    border-radius: 5px;
+    padding: 10px;     
+    float: left;             
+    border-style: dashed;
+}
+.menu1 li:hover{
+    background-color: #ffe292;
+}
+.menu1 li {
+    margin-bottom: 10px;        
+    padding: 5px 10px;                
+}
