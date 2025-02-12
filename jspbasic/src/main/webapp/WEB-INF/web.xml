@@ -1,41 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns="https://jakarta.ee/xml/ns/jakartaee"
-   xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
-   id="WebApp_ID" version="5.0">
-   <display-name>jspbasic</display-name>
-   <welcome-file-list>
-      <welcome-file>index.jsp</welcome-file>
-   </welcome-file-list>
-   
-   <!-- application init parameter -->
-   <context-param>
-      <param-name>appname</param-name>
-      <param-value>jspbasic</param-value>
-   </context-param>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" id="WebApp_ID" version="5.0">
 
-   <context-param>
-      <param-name>version</param-name>
-      <param-value>1.0</param-value>
-   </context-param>
-	
-<!-- session timeout setting -->
-<session-config>
-	<session-timeout>1</session-timeout>
-</session-config>
-
-<!-- error page setting -->
-<error-page>
-	<exception-type>java.lang.ArithmeticException</exception-type>
-	<location>/jsp/ae.jsp</location>
-</error-page>
-<error-page>
-	<error-code>404</error-code>
-	<location>/jsp/error404.jsp</location>
-</error-page>
-<error-page>
-	<error-code>500</error-code>
-	<location>/jsp/error500.jsp</location>
-</error-page>
-
+  <display-name>jspbasic</display-name>
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- application init parameter -->
+  <context-param>
+     <param-name>appname</param-name>
+     <param-value>jspbasic</param-value>
+  </context-param>
+  <context-param>
+     <param-name>version</param-name>
+     <param-value>1.0</param-value>
+  </context-param>
+  
+  <!-- session timeout setting -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  
+  <!-- error page setting -->
+  <error-page>
+   <exception-type>java.lang.ArithmeticException</exception-type>
+   <location>/jsp/ae.jsp</location>
+  </error-page>  
+  <error-page>
+     <error-code>404</error-code>
+     <location>/jsp/error404.jsp</location>
+  </error-page>
+  <error-page>
+     <error-code>500</error-code>
+     <location>/jsp/error500.jsp</location>
+  </error-page>
+  
+  <!-- LogginFilter setting -->
+  <!-- 
+  <filter>
+     <filter-name>LoggingFilter</filter-name>
+     <filter-class>jspbasic.filter.LoggingFilter</filter-class>
+     <init-param>
+        <param-name>name</param-name>
+        <param-value>홍길동</param-value>
+     </init-param>
+  </filter>
+  <filter-mapping>
+     <filter-name>LoggingFilter</filter-name>
+     <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+  
+  <!-- EncodingFilter setting -->
+  <!-- 
+  <filter>
+     <filter-name>EncodingFilter</filter-name>
+     <filter-class>jspbasic.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+     <filter-name>EncodingFilter</filter-name>
+     <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+  
+  <!-- ServletContextListener setting -->
+  <!-- 
+  <listener>
+     <listener-class>jspbasic.listener.ApplicationListener</listener-class>
+  </listener>
+   -->
+  
+  <!-- HttpSessionListener setting -->
+  <!-- 
+  <listener>
+     <listener-class>jspbasic.listener.SessionListener</listener-class>
+  </listener>
+  -->  
+  
+  <!-- ServletRequestListener setting -->
+   <!--
+  <listener>
+     <listener-class>jspbasic.listener.RequestListener</listener-class>
+  </listener>
+  -->
+  
+  <!-- ServletContextAttributeListener setting -->
+  <!-- 
+  <listener>
+     <listener-class>jspbasic.listener.ApplicationAttributeListener</listener-class>
+  </listener>
+   -->
+  
+  <!-- SessionAttributeListener setting -->
+  <!--
+  <listener>
+     <listener-class>jspbasic.listener.SessAttributeListener</listener-class>
+  </listener>
+  -->
+  
+  <!-- fileupload servlet setting -->
+  <servlet>
+     <servlet-name>FileuploadServlet</servlet-name>
+     <servlet-class>jspbasic.servlet.FileuploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+     <servlet-name>FileuploadServlet</servlet-name>
+     <url-pattern>/fileupload</url-pattern>
+  </servlet-mapping>
+    
+      <servlet>
+     <servlet-name>FileDownloadServlet</servlet-name>
+     <servlet-class>jspbasic.servlet.FileDownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+     <servlet-name>FileDownloadServlet</servlet-name>
+     <url-pattern>/filedownload</url-pattern>
+  </servlet-mapping>
+  
+  <!-- sendmail servlet setting -->
+        <servlet>
+     <servlet-name>SendmailServlet</servlet-name>
+     <servlet-class>jspbasic.servlet.SendmailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+     <servlet-name>SendmailServlet</servlet-name>
+     <url-pattern>/sendmail</url-pattern>
+  </servlet-mapping>
+  
+  
 </web-app>
+
+
