@@ -13,7 +13,7 @@
 <h3>메일 보내기</h3>
 <form action="/sendmail" method="post" enctype="multipart/form-data">
     발신자 : <input type="text" name="sender"><br>
-    수신자 : <input type="text" name="receiver"><br>
+    수신자 : <input type="text" name="receiver"><br>  <!-- 확인할 부분 -->
     제목 : <input type="text" name="subject"><br>
     내용 : <textarea name="content"></textarea><br>
     첨부파일 : <input type="file" name="file"><br>

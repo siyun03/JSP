@@ -10,7 +10,7 @@ Directive (디렉티브) : 페이지 지시자
 
 <%@ page contentType="text/html; charset=UTF-8"%>
 
-​<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+​<%@ taglib prefix="c" uri="jakarta.tags.core" %> 
 <c:out value="hello" />
 
 <%@ include file="include.jsp" %>

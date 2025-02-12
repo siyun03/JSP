@@ -1,2 +1,3 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-${"filter.jsp"}
+
+age.jsp에서 결과:${resultObj}

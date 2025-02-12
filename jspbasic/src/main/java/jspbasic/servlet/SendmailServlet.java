@@ -1,6 +1,5 @@
 package jspbasic.servlet;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import javax.mail.*;
@@ -8,6 +7,7 @@ import javax.mail.internet.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.http.Part;
+
 
 public class SendmailServlet extends HttpServlet {
 
@@ -37,19 +37,34 @@ public class SendmailServlet extends HttpServlet {
 
         String sender = request.getParameter("sender");
         String receiver = request.getParameter("receiver");
+        System.out.println("수신자 이메일: " + receiver); // 콘솔에서 확인
+
         String subject = request.getParameter("subject");
         String content = request.getParameter("content");
 
-        // 첨부파일 처리 (getPart 사용)
-        Part filePart = request.getPart("file");
-        String fileName = filePart.getSubmittedFileName(); // 파일 이름
+        // Null 체크
+        if (sender == null) sender = "";
+        if (receiver == null || receiver.trim().isEmpty()) {
+            throw new ServletException("수신자 이메일이 입력되지 않았습니다.");
+        }
+        if (subject == null) subject = "";
+        if (content == null) content = "";
+
+        // 이메일 주소 유효성 검사
+        try {
+            InternetAddress emailAddr = new InternetAddress(receiver);
+            emailAddr.validate();
+        } catch (AddressException e) {
+            throw new ServletException("유효하지 않은 이메일 주소입니다: " + receiver);
+        }
+
 
         try {
             // 이메일에 메세지 작성
             Message message = new MimeMessage(session);
 
             // 발신자 이메일 주소 작성
-            message.setFrom(new InternetAddress(sender));
+            message.setFrom(new InternetAddress(username)); // Gmail 계정으로 설정
 
             // 수신자 이메일 주소 작성
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
@@ -57,22 +72,28 @@ public class SendmailServlet extends HttpServlet {
             // 이메일 제목
             message.setSubject(subject);
 
-            // 이메일 내용
+            // 이메일 본문
             MimeBodyPart textPart = new MimeBodyPart();
             textPart.setText(content);
 
-            // 첨부파일 추가
+            // 첨부파일 처리
+            Part filePart = request.getPart("file");
             MimeBodyPart attachmentPart = new MimeBodyPart();
-            if (filePart != null) {
-                // 파일을 메일에 첨부
+            boolean hasAttachment = false; // 첨부파일 존재 여부 체크
+
+            if (filePart != null && filePart.getSize() > 0) {
+            	String fileName = (filePart != null) ? filePart.getSubmittedFileName() : "";
                 attachmentPart.setFileName(fileName);
                 attachmentPart.setContent(filePart.getInputStream(), "application/octet-stream");
+                hasAttachment = true;
             }
 
-            // Multipart 객체로 본문과 첨부파일 결합
+            // Multipart 객체 생성 및 본문 추가
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(textPart);
-            if (filePart != null) {
+            
+            // 첨부파일이 있을 경우 추가
+            if (hasAttachment) {
                 multipart.addBodyPart(attachmentPart);
             }
 

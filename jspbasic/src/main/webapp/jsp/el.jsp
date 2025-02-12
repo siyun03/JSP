@@ -66,27 +66,27 @@ EL (Expression Language) : 표현식(값으로 평가되는 문장) 언어
 ${1+2}<br>
 ${"Hello"}<br>
 
-<%-- 스크립트릿 문법 --%>
+<%-- 스크립트릿 문법 
 <%
 	out.print(request.getParameter("name"));
 %>
-
-<%-- EL 문법 --%>
+--%>
+<%-- EL 문법 
 ${param.name}<br>
-
-<%-- 스크립트릿 문법 --%>
+--%>
+<%-- 스크립트릿 문법
 <%
 	request.setAttribute("a", 1);
 	out.print(request.getAttribute("a")+"<br>");
 %>
-
+--%>
 <%-- EL 문법 --%>
 ${requestScope.a}<br>
 
 <%-- JSTL 문법 --%>
 <c:set var="a" value="1" scope="request" />
 <c:out value="${a}"/><br>
-
+--%>
 <%
 	String str1 = null;
  	String str2 = "";
