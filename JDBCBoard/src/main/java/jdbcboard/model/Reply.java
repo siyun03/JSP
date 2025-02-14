@@ -1,8 +1,7 @@
 package jdbcboard.model;
 
 import java.io.Serializable;
-import java.security.Timestamp;
-
+import java.sql.Timestamp;
 public class Reply implements Serializable{
 	
 	private static final long SerialVersionUID = 90580237482972L;

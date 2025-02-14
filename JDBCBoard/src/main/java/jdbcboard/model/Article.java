@@ -1,7 +1,7 @@
 package jdbcboard.model;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class Article implements Serializable{
 	

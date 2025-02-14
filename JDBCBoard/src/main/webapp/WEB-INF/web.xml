@@ -23,6 +23,14 @@
 	<listener-class>jdbcboard.listener.ApplicationListener</listener-class>
 </listener>
 
+<filter>
+	<filter-name>ViewResolverFilter</filter-name>
+	<filter-class>jdbcboard.filter.ViewResolverFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>ViewResolverFilter</filter-name>
+	<url-pattern>*.do</url-pattern>
+</filter-mapping>
 
 
 <servlet>
@@ -33,6 +41,22 @@
 	<servlet-name>JDBCBoardController</servlet-name>
 	<url-pattern>*.do</url-pattern>
 </servlet-mapping>
+
+<error-page>
+	<error-code>403</error-code>
+	<location>/jsp/error/error403.jsp</location>
+</error-page>
+
+<error-page>
+	<error-code>404</error-code>
+	<location>/jsp/error/error404.jsp</location>
+</error-page>
+
+<error-page>
+	<error-code>500</error-code>
+	<location>/jsp/error/error500.jsp</location>
+</error-page>
+
   
 </web-app>
 

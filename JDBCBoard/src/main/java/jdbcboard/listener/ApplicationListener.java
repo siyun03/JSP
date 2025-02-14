@@ -27,15 +27,15 @@ public class ApplicationListener implements ServletContextListener{
 			commandProperties.load(new FileReader(sce.getServletContext().getRealPath(commandProp)));
 			
 			// 3개의 Properties를 appProperties이라는 Properties로 합쳐서 서블릿컨텍스트에 appProp속성변수로 저장하기!
-			Properties appProperties = new Properties();
-			appProperties.putAll(databaseProperties);
-			appProperties.putAll(sqlProperties);
-			appProperties.putAll(commandProperties);
+//			Properties appProperties = new Properties();
+//			appProperties.putAll(databaseProperties);
+//			appProperties.putAll(sqlProperties);
+//			appProperties.putAll(commandProperties);
 			
 			sce.getServletContext().setAttribute("databaseProperties", databaseProperties);
 			sce.getServletContext().setAttribute("sqlProperties", sqlProperties);
 			sce.getServletContext().setAttribute("commandProperties", commandProperties);
-			sce.getServletContext().setAttribute("appProp", appProperties);
+			//sce.getServletContext().setAttribute("appProp", appProperties);
 			
 			
 		} catch (IOException ioe) {

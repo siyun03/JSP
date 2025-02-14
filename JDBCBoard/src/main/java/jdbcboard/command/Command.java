@@ -1,4 +1,4 @@
-package jabcboard.command;
+package jdbcboard.command;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
