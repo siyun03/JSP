@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="User">
+	
+	<resultMap id="UserResult" type="user.User" >
+		<id property="sid" column="sid"/>
+		<result property="passwd" column="passwd"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>
+	</resultMap>
+
+	<insert id="insertUser" parameterType="user.User">
+		INSERT INTO MYBATISUSER(SID, PASSWD, NAME, EMAIL)
+		VALUES (SEQ_MYBATISUSER.NEXTVAL, #{passwd}, #{name}, #{email})
+	</insert>
+	
+	<select id="selectUser" resultMap="UserResult">
+		SELECT * FROM MYBATISUSER ORDER BY SID DESC
+	</select>
+	
+	<select id="getUser" parameterType="int" resultType="user.User">
+		SELECT * FROM MYBATISUSER WHERE SID=#{sid}
+	</select>
+	
+	<update id="updateUser" parameterType="user.User">
+		UPDATE MYBATISUSER SET NAME=#{name}, EMAIL=#{email}
+		WHERE SID=#{sid}
+	</update>
+	
+	<delete id="deleteUser" parameterType="int">
+		DELETE MYBATISUSER WHERE SID=#{sid}
+	</delete>
+
+</mapper>
