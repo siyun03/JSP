@@ -15,13 +15,15 @@ import jdbcboard.model.Member;
 import jdbcboard.util.ConnectionUtil;
 
 public class MemberDAOimpl implements MemberDAO{
+
+	private static MemberDAOimpl memberDAOImpl = new MemberDAOimpl();
 	
 	Connection conn = null;
 	Properties sqlProperties = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
-	public MemberDAOimpl() {
+	private MemberDAOimpl() {
 		try {
 			sqlProperties = new Properties();
 			sqlProperties.load(new FileReader(ApplicationConstant.SQL_PROPERTIES));
@@ -30,23 +32,25 @@ public class MemberDAOimpl implements MemberDAO{
 			e.printStackTrace();
 		}
 	}
+	public static MemberDAOimpl getMemberDAOImpl() {
+		return memberDAOImpl;
+	}
 	
 	@Override
 	public int insertMember(Member member) {
 		try {
-			String sql = sqlProperties.getProperty("INSERT_BOARD");
+			String sql = sqlProperties.getProperty("INSERT_MEMBER");
 			conn = ConnectionUtil.getConnectionUtil().getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMid());
 			pstmt.setString(2, member.getMname());
-			pstmt.setString(3, member.getMemail());
+			pstmt.setString(3, member.getMalias());
 			pstmt.setString(4, member.getMpass());
-			pstmt.setString(5, member.getMalias());
+			pstmt.setString(5, member.getMemail());
 			pstmt.setString(6, member.getMcp());
 			pstmt.setString(7, "N");
 			int result = pstmt.executeUpdate();
-			rs = pstmt.executeQuery();
-			return pstmt.executeUpdate();
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -132,10 +136,9 @@ public class MemberDAOimpl implements MemberDAO{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMname());
 			pstmt.setString(2, member.getMalias());
-			pstmt.setString(3, member.getMpass());
-			pstmt.setString(4, member.getMemail());
-			pstmt.setString(5, member.getMcp());
-			pstmt.setString(6, member.getMid());
+			pstmt.setString(3, member.getMemail());
+			pstmt.setString(4, member.getMcp());
+			pstmt.setString(5, member.getMid());
 			int result = pstmt.executeUpdate();
 			return result;
 		} catch (Exception e) {
@@ -173,5 +176,27 @@ public class MemberDAOimpl implements MemberDAO{
 		}
 	}
 	
+	@Override
+	public boolean checkLogin(String mid, String mpass) {
+		try {
+			conn = ConnectionUtil.getConnectionUtil().getConnection();
+			pstmt = conn.prepareStatement(sqlProperties.getProperty("CHECKLOGIN_MEMBER"));
+			pstmt.setString(1, mid);
+			pstmt.setString(2, mpass);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next() && rs.getInt("cnt")>0) return true;
+			else return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			try {
+				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 
 }

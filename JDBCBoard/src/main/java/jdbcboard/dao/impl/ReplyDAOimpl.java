@@ -16,18 +16,24 @@ import jdbcboard.util.ConnectionUtil;
 
 public class ReplyDAOimpl implements ReplyDAO{
 
+	private static ReplyDAOimpl replyDAOImpl = new ReplyDAOimpl();
+	
 	Connection conn = null;
 	Properties sqlProperties = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
-	public ReplyDAOimpl() {
+	private ReplyDAOimpl() {
 		try {
 			sqlProperties = new Properties();
 			sqlProperties.load(new FileReader(ApplicationConstant.SQL_PROPERTIES));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static ReplyDAOimpl getReplyDAOImpl() {
+		return replyDAOImpl;
 	}
 	
 	@Override
@@ -42,7 +48,6 @@ public class ReplyDAOimpl implements ReplyDAO{
 			pstmt.setInt(4, reply.getAid());
 			
 			int result = pstmt.executeUpdate();
-			rs = pstmt.executeQuery();
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +71,9 @@ public class ReplyDAOimpl implements ReplyDAO{
 			List<Reply> replyList = new ArrayList<Reply>();
 			while(rs.next()) {
 				Reply reply = new Reply();
+				reply.setRid(rs.getInt("rid"));
 				reply.setRcontent(rs.getString("rcontent"));
+				reply.setRregdate(rs.getTimestamp("rregdate"));
 				reply.setRdelyn(rs.getString("rdelyn"));
 				reply.setMid(rs.getString("mid"));
 				reply.setAid(rs.getInt("aid"));

@@ -16,5 +16,6 @@ public interface MemberService {
 	
 	default int deleteMember(String mid) {return 0;}
 	
+	default boolean checkLogin(String mid, String mpass) {return false;}
 
 }

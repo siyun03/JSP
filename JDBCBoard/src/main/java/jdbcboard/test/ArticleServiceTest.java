@@ -10,22 +10,22 @@ import jdbcboard.service.impl.ArticleServiceimpl;
 public class ArticleServiceTest {
 	
 	public static void main(String[] args) {
-		ArticleService articleService = new ArticleServiceimpl();
+		ArticleService articleService = ArticleServiceimpl.getArticleServiceImpl();
+
 		
-//		// insert
-//		Article article = new Article(0, "LCK", "T1이 졌다", 3, 587, 2003, null,"N","hong", 1);
-//		int result = articleService.insertArticle(article);
-//		if(result>0) {
-//			System.out.println("등록성공!");
-//		}
-		
-		
-		// update
-		Article article = new Article(1, "LPL","ddagua",1, 0, 0, null, null, null, 0);
-		int result = articleService.updateArticle(article);
-		if(result>0) System.out.println("수정 성공");
-		
+		// insert
+	//	for (int i=0; i<101; i++) {
+		Article article = new Article(0, "LCK", "4월시작", 3, 587, 2003, null,"N","kim", 1,"32");
+		int result = articleService.insertArticle(article);
+	//	}
+		if(result>0) {
+			System.out.println("등록성공!");
+		}
 //		
+		// update
+//		Article article = new Article(1, "LPL","ddagua",1, 0, 0, null, null, null, 0);
+//		int result = articleService.updateArticle(article);
+//		if(result>0) System.out.println("수정 성공");
 //		
 //		// delete
 //		int result = articleService.deleteArticle(2);

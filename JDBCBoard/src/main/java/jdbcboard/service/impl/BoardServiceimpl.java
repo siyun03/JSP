@@ -2,6 +2,7 @@ package jdbcboard.service.impl;
 
 import java.util.List;
 
+import jdbcboard.dao.impl.ArticleDAOimpl;
 import jdbcboard.dao.impl.BoardDAOimpl;
 import jdbcboard.model.Board;
 import jdbcboard.model.Member;
@@ -9,11 +10,17 @@ import jdbcboard.service.BoardService;
 
 public class BoardServiceimpl implements BoardService{
 	
+	private static BoardServiceimpl articleServiceImpl = new BoardServiceimpl();
 	private BoardDAOimpl boardDAOImpl;
 	
-	public BoardServiceimpl() {
-		boardDAOImpl = new BoardDAOimpl();
+	private BoardServiceimpl() {
+		boardDAOImpl = BoardDAOimpl.getBoardDAOImpl();
 	}
+	
+	public static BoardServiceimpl getBoardServiceImpl() {
+		return articleServiceImpl;
+	}
+	
 	
 	@Override
 	public int insertBoard(Board board) {

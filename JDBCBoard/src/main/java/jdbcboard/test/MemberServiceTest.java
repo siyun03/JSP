@@ -4,16 +4,18 @@ import java.util.List;
 
 import jdbcboard.model.Board;
 import jdbcboard.model.Member;
+import jdbcboard.service.ArticleService;
 import jdbcboard.service.MemberService;
+import jdbcboard.service.impl.ArticleServiceimpl;
 import jdbcboard.service.impl.MemberServiceimpl;
 
 public class MemberServiceTest {
 	
 	public static void main(String[] args) {
 		
-		MemberService memberService = new MemberServiceimpl();
+		MemberService memberService = MemberServiceimpl.getMemberServiceImpl();
 		
-//		// insert
+		// insert
 //		Member member = new Member("hong", "홍길동", "홍두깨", "1234", "hong@h.com", "010-123-3234","N");
 //		int result = memberService.insertMember(member);
 //		if(result>0) {
@@ -33,7 +35,7 @@ public class MemberServiceTest {
 //			System.out.println("삭제성공");
 //		}
 //
-//		// select
+		// select
 //		List<Member> memberList = memberService.selectMember();
 //		for(Member member : memberList) {
 //			System.out.println(member);

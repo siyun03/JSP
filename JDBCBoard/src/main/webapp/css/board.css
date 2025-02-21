@@ -1,0 +1,41 @@
+body {
+	font-family: 'Courier New', Courier, monospace;
+	
+}
+
+
+#wrapper {
+	width: 1024px;
+	margin: 0 auto;
+}
+
+nav { margin: 15px 0; }
+
+table { width: 1024px; }
+
+a:link{
+    color: darkcyan;
+}
+a:visited{
+    color: grey;
+}
+a:hover{
+    color: darkgreen;
+}
+
+.alert-message {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}

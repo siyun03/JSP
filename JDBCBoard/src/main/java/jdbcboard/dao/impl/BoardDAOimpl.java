@@ -16,18 +16,24 @@ import jdbcboard.util.ConnectionUtil;
 
 public class BoardDAOimpl implements BoardDAO{
 	
+	private static BoardDAOimpl boardDAOImpl = new BoardDAOimpl();
+
 	Connection conn = null;
 	Properties sqlProperties = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
-	public BoardDAOimpl() {
+	private BoardDAOimpl() {
 		try {
 			sqlProperties = new Properties();
 			sqlProperties.load(new FileReader(ApplicationConstant.SQL_PROPERTIES));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static BoardDAOimpl getBoardDAOImpl() {
+		return boardDAOImpl;
 	}
 	
 	@Override
@@ -39,7 +45,6 @@ public class BoardDAOimpl implements BoardDAO{
 			pstmt.setString(1, board.getBname());
 			pstmt.setInt(2, board.getBacnt());
 			int result = pstmt.executeUpdate();
-			rs = pstmt.executeQuery();
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

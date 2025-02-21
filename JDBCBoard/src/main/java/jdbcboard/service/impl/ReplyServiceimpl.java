@@ -3,6 +3,7 @@ package jdbcboard.service.impl;
 import java.util.List;
 
 import jdbcboard.dao.impl.ArticleDAOimpl;
+import jdbcboard.dao.impl.MemberDAOimpl;
 import jdbcboard.dao.impl.ReplyDAOimpl;
 import jdbcboard.model.Member;
 import jdbcboard.model.Reply;
@@ -10,11 +11,17 @@ import jdbcboard.service.ReplyService;
 
 public class ReplyServiceimpl implements ReplyService{
 
+	private static ReplyServiceimpl replyServiceImpl = new ReplyServiceimpl();
 	private ReplyDAOimpl replyDAOImpl;
 	
-	public ReplyServiceimpl() {
-		replyDAOImpl = new ReplyDAOimpl();
+	private ReplyServiceimpl() {
+		replyDAOImpl = ReplyDAOimpl.getReplyDAOImpl();
 	}
+	
+	public static ReplyServiceimpl getReplyServiceImpl() {
+		return replyServiceImpl;
+	}
+	
 	
 	@Override
 	public int insertReply(Reply reply) {

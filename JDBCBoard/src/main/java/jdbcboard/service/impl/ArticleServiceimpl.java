@@ -9,10 +9,15 @@ import jdbcboard.service.ArticleService;
 
 public class ArticleServiceimpl implements ArticleService{
 	
+	private static ArticleServiceimpl articleServiceImpl = new ArticleServiceimpl();
 	private ArticleDAOimpl articleDAOImpl;
 	
-	public ArticleServiceimpl() {
-		articleDAOImpl = new ArticleDAOimpl();
+	private ArticleServiceimpl() {
+		articleDAOImpl = ArticleDAOimpl.getArticleDAOImpl();
+	}
+	
+	public static ArticleServiceimpl getArticleServiceImpl() {
+		return articleServiceImpl;
 	}
 	
 	@Override
@@ -21,8 +26,8 @@ public class ArticleServiceimpl implements ArticleService{
 	}
 	
 	@Override
-	public List<Article> selectArticle() {
-		return articleDAOImpl.selectArticle();
+	public List<Article> selectArticle(String searchBoard, String searchClass, String searchVal) {
+		return articleDAOImpl.selectArticle(searchBoard, searchClass, searchVal);
 	}
 	
 	@Override
@@ -40,4 +45,9 @@ public class ArticleServiceimpl implements ArticleService{
 		return articleDAOImpl.deleteArticle(aid);
 	}
 
+	@Override
+	public int increaseAvcnt(int aid) {
+		return articleDAOImpl.increaseAvcnt(aid);
+	}
+	
 }

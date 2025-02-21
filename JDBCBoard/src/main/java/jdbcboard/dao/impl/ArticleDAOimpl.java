@@ -11,22 +11,122 @@ import java.util.Properties;
 import jdbcboard.constant.ApplicationConstant;
 import jdbcboard.dao.ArticleDAO;
 import jdbcboard.model.Article;
-import jdbcboard.model.Board;
 import jdbcboard.util.ConnectionUtil;
 
-public class ArticleDAOimpl implements ArticleDAO{
+public class ArticleDAOimpl implements ArticleDAO {
+	
+	private static ArticleDAOimpl articleDAOImpl = new ArticleDAOimpl();
 	
 	Connection conn = null;
-	Properties sqlProperties = null;
+	Properties sqlProperties = null;	
 	PreparedStatement pstmt = null;
-	ResultSet rs = null;
+	ResultSet rs = null;	
 	
-	public ArticleDAOimpl() {
+	private ArticleDAOimpl() {
 		try {
 			sqlProperties = new Properties();
 			sqlProperties.load(new FileReader(ApplicationConstant.SQL_PROPERTIES));
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static ArticleDAOimpl getArticleDAOImpl() {
+		return articleDAOImpl;
+	}
+	
+	@Override
+	public List<Article> selectArticle(String searchBoard, String searchClass, String searchVal) {
+		try {
+			String sql = sqlProperties.getProperty("SELECT_ARTICLE");
+			
+			if (searchBoard!=null && !searchBoard.equals("")) {
+				sql += " AND A.BID=" + searchBoard + " ";
+			}
+			
+			if (searchClass!=null) {
+				if (searchClass.equals("")) {
+					sql += " AND (ASUBJECT LIKE '%" + searchVal + "%' OR ";
+					sql += " ACONTENT LIKE '%" + searchVal + "%' OR ";
+					sql += " MID LIKE '%" + searchVal + "%') ";
+				} else if (searchClass.equals("asubject")) {
+					sql += " AND ASUBJECT LIKE '%" + searchVal + "%' ";
+				} else if (searchClass.equals("acontent")) {
+					sql += " AND ACONTENT LIKE '%" + searchVal + "%' ";
+				} else if (searchClass.equals("mid")) {
+					sql += " AND MID LIKE '%" + searchVal + "%' ";
+				}
+			}
+			
+			sql += " ORDER BY AID DESC ";
+			
+			//System.out.println("sql => " + sql);
+			
+			conn = ConnectionUtil.getConnectionUtil().getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			List<Article> articleList = new ArrayList<Article>();
+			while (rs.next()) {
+				Article article = new Article();
+				article.setAid(rs.getInt("aid"));
+				article.setAsubject(rs.getString("asubject"));
+				article.setAcontent(rs.getString("acontent"));
+				article.setAcount(rs.getInt("acount"));
+				article.setAvcnt(rs.getInt("avcnt"));
+				article.setArcnt(rs.getInt("arcnt"));
+				article.setAregdate(rs.getTimestamp("aregdate"));
+				article.setAdelyn(rs.getString("adelyn"));
+				article.setMid(rs.getString("mid"));
+				article.setBid(rs.getInt("bid"));
+				article.setBname(rs.getString("bname"));
+				articleList.add(article);
+			}
+			return articleList;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		} finally {
+			try {
+				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public Article getArticle(int aid) {
+		try {
+			String sql = sqlProperties.getProperty("GET_ARTICLE");
+			conn = ConnectionUtil.getConnectionUtil().getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, aid);
+			rs = pstmt.executeQuery();
+			Article article = null;
+			if (rs.next()) {
+				article = new Article();
+				article.setAid(rs.getInt("aid"));
+				article.setAsubject(rs.getString("asubject"));
+				article.setAcontent(rs.getString("acontent"));
+				article.setAcount(rs.getInt("acount"));
+				article.setAvcnt(rs.getInt("avcnt"));
+				article.setArcnt(rs.getInt("arcnt"));
+				article.setAregdate(rs.getTimestamp("aregdate"));
+				article.setAdelyn(rs.getString("adelyn"));
+				article.setMid(rs.getString("mid"));
+				article.setBid(rs.getInt("bid"));
+				article.setBname(rs.getString("bname"));
+			}
+			return article;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		} finally {
+			try {
+				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 	
@@ -44,87 +144,15 @@ public class ArticleDAOimpl implements ArticleDAO{
 			pstmt.setString(6, article.getAdelyn());
 			pstmt.setString(7, article.getMid());
 			pstmt.setInt(8, article.getBid());
-			
-			int result = pstmt.executeUpdate();
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
+			return pstmt.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return 0;
-		}finally {
+		} finally {
 			try {
 				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-	}
-	
-	@Override
-	public List<Article> selectArticle() {
-		try {
-			String sql = sqlProperties.getProperty("SELECT_ARTICLE");
-			conn = ConnectionUtil.getConnectionUtil().getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			List<Article> articleList = new ArrayList<>();
-			while(rs.next()) {
-				Article article = new Article();
-				article.setAid(rs.getInt("aid"));
-				article.setAsubject(rs.getString("asubject"));
-				article.setAcontent(rs.getString("acontent"));
-				article.setAcount(rs.getInt("acount"));
-				article.setAvcnt(rs.getInt("avcnt"));
-				article.setArcnt(rs.getInt("arcnt"));
-				article.setAdelyn(rs.getString("adelyn"));
-				article.setMid(rs.getString("mid"));
-				article.setBid(rs.getInt("bid"));
-				
-				articleList.add(article);
-			}
-			return articleList;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally {
-			try {
-				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-	
-	}
-	
-	@Override
-	public Article getArticle(int aid) {
-		try {
-			String sql = sqlProperties.getProperty("GET_ARTICLE");
-			conn = ConnectionUtil.getConnectionUtil().getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, aid);
-			rs = pstmt.executeQuery();
-			Article article = null;
-			if(rs.next()) {
-				article = new Article();
-				article.setAid(rs.getInt("aid"));
-				article.setAsubject(rs.getString("asubject"));
-				article.setAcontent(rs.getString("acontent"));
-				article.setAcount(rs.getInt("acount"));
-				article.setAvcnt(rs.getInt("avcnt"));
-				article.setArcnt(rs.getInt("arcnt"));
-				article.setAdelyn(rs.getString("adelyn"));
-				article.setMid(rs.getString("mid"));
-				article.setBid(rs.getInt("bid"));
-			}
-			return article;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally {
-			try {
-				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
-			} catch (Exception e2) {
-				e2.printStackTrace();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -137,17 +165,17 @@ public class ArticleDAOimpl implements ArticleDAO{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, article.getAsubject());
 			pstmt.setString(2, article.getAcontent());
-			pstmt.setInt(3, article.getAid());
-			int result = pstmt.executeUpdate();
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
+			pstmt.setInt(3, article.getBid());
+			pstmt.setInt(4, article.getAid());
+			return pstmt.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return 0;
-		}finally {
+		} finally {
 			try {
 				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
-			} catch (Exception e2) {
-				e2.printStackTrace();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -159,19 +187,49 @@ public class ArticleDAOimpl implements ArticleDAO{
 			conn = ConnectionUtil.getConnectionUtil().getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, aid);
-			int result = pstmt.executeUpdate();
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
+			return pstmt.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return 0;
-		}finally {
+		} finally {
 			try {
 				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
-			} catch (Exception e2) {
-				e2.printStackTrace();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
 	
+	@Override
+	public int increaseAvcnt(int aid) {
+		try {
+			String sql = sqlProperties.getProperty("INCREASE_AVCNT");
+			conn = ConnectionUtil.getConnectionUtil().getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, aid);
+			return pstmt.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return 0;
+		} finally {
+			try {
+				ConnectionUtil.getConnectionUtil().closeConnection(rs, pstmt, conn);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
